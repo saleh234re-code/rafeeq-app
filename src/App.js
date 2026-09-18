@@ -1,24 +1,28 @@
 import logo from './logo.svg';
 import './App.css';
-
+import QuranContexted from "../src/Context/Quran"
+import SulahContext from '../src/Context/Sulah'
+import Barsed from '../src/Components/Barsed'
+import DoaaContext from '../src/Context/Doaas' 
+import AdkarContext from "../src/Context/ShowAdkar"
 function App() {
   return (
+    <AdkarContext>        
+    <SulahContext>                                   
+     <QuranContexted> 
+      <DoaaContext>                
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     
+
+    <Barsed/>
+
+
     </div>
+     </DoaaContext>
+              </QuranContexted>
+               </SulahContext>
+                </AdkarContext>
+
   );
 }
 
