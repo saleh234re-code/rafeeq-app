@@ -1,7 +1,6 @@
-import { createContext, useEffect } from "react";
+import { createContext } from "react";
 import { useState } from "react";
-import axios from "axios";
-import Adkaer from '../Adkaer.json'
+ import Adkaer from '../Adkaer.json'
 export const AdkarContext =createContext([])
 
 export default function Adkar({children}){

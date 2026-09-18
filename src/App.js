@@ -1,5 +1,4 @@
-import logo from './logo.svg';
-import './App.css';
+ import './App.css';
 import QuranContexted from "../src/Context/Quran"
 import SulahContext from '../src/Context/Sulah'
 import Barsed from '../src/Components/Barsed'

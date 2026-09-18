@@ -1,7 +1,6 @@
-import { createContext, useEffect } from "react";
+import { createContext } from "react";
 import { useState } from "react";
-import axios from "axios";
-import Doaa from '../DoaaJson.json'
+ import Doaa from '../DoaaJson.json'
 export const DoaaContext =createContext([])
 
 export default function Doaas({children}){

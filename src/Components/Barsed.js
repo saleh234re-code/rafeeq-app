@@ -1,7 +1,6 @@
-import React, { useMemo } from "react";
+import   { useMemo } from "react";
 import DoaaCom from "./DoaaComp";
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import Adkaer from "../Components/Adhkar";
+ import Adkaer from "../Components/Adhkar";
 import Doaa from '../images/dua.png'
 import Sulah from "../Components/Sulah";
 import { HashRouter, useLocation, useNavigate } from "react-router-dom";
