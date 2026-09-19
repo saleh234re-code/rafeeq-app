@@ -8,8 +8,7 @@ import { createTheme } from "@mui/material/styles";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { DemoProvider } from "@toolpad/core/internal";
-import IconShow from '../images/favicon.png'
-import HomeIcon from "@mui/icons-material/Home";
+ import HomeIcon from "@mui/icons-material/Home";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SpaIcon from "@mui/icons-material/Spa";

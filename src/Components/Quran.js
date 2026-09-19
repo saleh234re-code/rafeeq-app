@@ -30,7 +30,7 @@ export default function Quran() {
     if (!selectedSurah) {
       getOneSurah(1);
     }
-  }, []);
+  }, [selectedSurah, getOneSurah]);
 
   // لما تتفتح سورة على الموبايل، ننزل تلقائي لمكان المحتوى
   useEffect(() => {
