@@ -288,8 +288,7 @@ export default function DashBoard() {
           </Typography>
         </Box>
       </Box>
-<AdSense slot="3331557063" style={{ mt: 4, mb: 2 }} />
-
+<AdSense slot="3331557063" />
       {/* ========== كروت التنقل السريع ========== */}
       <Box
         sx={{
