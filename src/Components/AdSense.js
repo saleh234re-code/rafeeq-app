@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Box } from "@mui/material";
 
-export default function AdSense({ slot, format = "auto", style = {} }) {
+export default function AdSense({ slot = "3331557063", style = {} }) {
   useEffect(() => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -16,6 +16,7 @@ export default function AdSense({ slot, format = "auto", style = {} }) {
         my: 2,
         textAlign: "center",
         overflow: "hidden",
+        minHeight: "90px",
         ...style,
       }}
     >
@@ -24,7 +25,7 @@ export default function AdSense({ slot, format = "auto", style = {} }) {
         style={{ display: "block" }}
         data-ad-client="ca-pub-7114645931029541"
         data-ad-slot={slot}
-        data-ad-format={format}
+        data-ad-format="auto"
         data-full-width-responsive="true"
       />
     </Box>
