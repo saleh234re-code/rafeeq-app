@@ -1,18 +1,20 @@
-import   { useMemo } from "react";
+import { useMemo } from "react";
 import DoaaCom from "./DoaaComp";
- import Adkaer from "../Components/Adhkar";
-import Doaa from '../images/dua.png'
+import Adkaer from "../Components/Adhkar";
+import Doaa from "../images/dua.png";
 import Sulah from "../Components/Sulah";
 import { HashRouter, useLocation, useNavigate } from "react-router-dom";
 import { createTheme } from "@mui/material/styles";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { DemoProvider } from "@toolpad/core/internal";
-
+import IconShow from '../images/favicon.png'
 import HomeIcon from "@mui/icons-material/Home";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import SpaIcon from "@mui/icons-material/Spa";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 import DashBoard from "./DashBoard";
 import Quran from "../Components/Quran";
@@ -63,7 +65,61 @@ function DashboardContent() {
   return (
     <AppProvider
       branding={{
-        title: "رفيق",
+        title: "",
+        logo: (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1.2,
+            }}
+          >
+            {/* اللوجو */}
+            <Box
+              sx={{
+                width: 36,
+                height: 36,
+                borderRadius: "10px",
+                background: "linear-gradient(135deg, #2F6F5E 0%, #1a4a3a 100%)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                boxShadow: "0 4px 12px rgba(47, 111, 94, 0.35)",
+              }}
+            >
+                            <AutoStoriesIcon sx={{ color: "white", fontSize: 22 }} />
+
+             </Box>
+
+            {/* الاسم */}
+          <Typography
+  sx={{
+    fontWeight: 800,
+    fontSize: "1.5rem",
+    background: "linear-gradient(90deg, #2F6F5E 0%, #3d8b75 50%, #1a4a3a 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    letterSpacing: "1.2px",
+    lineHeight: 1,
+    textShadow: "0 2px 8px rgba(47, 111, 94, 0.25)",
+    position: "relative",
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      bottom: -3,
+      left: 0,
+      width: "100%",
+      height: "2px",
+      background: "linear-gradient(90deg, transparent, #2F6F5E, transparent)",
+      borderRadius: 2,
+      opacity: 0.6,
+    },
+  }}
+>
+  رفيق
+</Typography>
+          </Box>
+        ),
       }}
       navigation={[
         {
@@ -86,7 +142,7 @@ function DashboardContent() {
               style={{
                 width: 24,
                 height: 24,
-                filter: "brightness(0) invert(1)", // عشان تبقى بيضاء زي باقي الأيقونات
+                filter: "brightness(0) invert(1)",
               }}
             />
           ),
@@ -110,11 +166,12 @@ function DashboardContent() {
           "& .MuiDrawer-root.MuiDrawer-anchorLeft.MuiDrawer-docked": {
             width: "200px",
           },
-          "& .MuiDrawer-root.MuiDrawer-anchorLeft.MuiDrawer-docked .MuiDrawer-paper": {
-            width: "200px",
-            backgroundColor: "#133330",
-            color: "white",
-          },
+          "& .MuiDrawer-root.MuiDrawer-anchorLeft.MuiDrawer-docked .MuiDrawer-paper":
+            {
+              width: "200px",
+              backgroundColor: "#133330",
+              color: "white",
+            },
         }}
       >
         {content}

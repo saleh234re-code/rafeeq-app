@@ -6,6 +6,8 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { TextField, useMediaQuery, useTheme } from "@mui/material";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import Typography from "@mui/material/Typography";
+import SearchIcon from "@mui/icons-material/Search";
+import InputAdornment from "@mui/material/InputAdornment";
 
 // دالة إزالة التشكيل
 function removeTashkeel(text) {
@@ -23,6 +25,13 @@ export default function Quran() {
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const contentRef = useRef(null);
 
+  // فتح سورة الفاتحة تلقائيًا لما الصفحة تفتح
+  useEffect(() => {
+    if (!selectedSurah) {
+      getOneSurah(1);
+    }
+  }, []);
+
   // لما تتفتح سورة على الموبايل، ننزل تلقائي لمكان المحتوى
   useEffect(() => {
     if (selectedSurah && isMobile && contentRef.current) {
@@ -32,108 +41,109 @@ export default function Quran() {
     }
   }, [selectedSurah, isMobile]);
 
-  const surah = ShowSurah.filter((p) => {
+  const filteredSurahs = ShowSurah.filter((p) => {
     const cleanName = removeTashkeel(p.name);
     const cleanSearch = removeTashkeel(search);
     return cleanName.includes(cleanSearch);
-  })
-    .slice(0, 10)
-    .map((p) => {
-      const isSelected = selectedSurah?.number === p.number;
+  });
 
-      return (
-        <Box
-          key={p.number}
-          onClick={() => getOneSurah(p.number)}
-          sx={{
-            position: "relative",
-            width: "100%",
-            minHeight: "80px",
-            color: isSelected ? "#fff" : "#2F6F5E",
-            margin: "0 0 10px 0",
-            p: 2,
-            borderRadius: 3,
-            background: isSelected ? "#2F6F5E" : "#E5F2ED",
-            border: isSelected ? "2px solid #1a4a3a" : "1px solid #e5e7eb",
+  const surah = filteredSurahs.map((p) => {
+    const isSelected = selectedSurah?.number === p.number;
+
+    return (
+      <Box
+        key={p.number}
+        onClick={() => getOneSurah(p.number)}
+        sx={{
+          position: "relative",
+          width: "100%",
+          minHeight: "72px",
+          color: isSelected ? "#fff" : "#2F6F5E",
+          mb: 1.2,
+          p: "12px 14px",
+          borderRadius: 2.5,
+          background: isSelected ? "#2F6F5E" : "#ffffff",
+          border: isSelected ? "2px solid #1a4a3a" : "1px solid #e2ebe6",
+          boxShadow: isSelected
+            ? "0 6px 18px rgba(47, 111, 94, 0.3)"
+            : "0 2px 8px rgba(0,0,0,0.04)",
+          transition: "all 0.22s ease",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          "&:hover": {
+            transform: isMobile ? "none" : "translateY(-2px)",
             boxShadow: isSelected
-              ? "0 6px 18px rgba(47, 111, 94, 0.35)"
-              : "0 4px 15px rgba(0,0,0,0.06)",
-            transition: "0.25s",
-            cursor: "pointer",
+              ? "0 8px 22px rgba(47, 111, 94, 0.35)"
+              : "0 6px 16px rgba(0,0,0,0.08)",
+            borderColor: isSelected ? "#1a4a3a" : "#2F6F5E",
+          },
+          "&:active": {
+            transform: "scale(0.98)",
+          },
+        }}
+      >
+        {/* رقم السورة */}
+        <Box
+          sx={{
+            width: 34,
+            height: 34,
+            borderRadius: "50%",
+            background: isSelected ? "#fff" : "#2F6F5E",
+            color: isSelected ? "#2F6F5E" : "white",
             display: "flex",
             alignItems: "center",
-            "&:hover": {
-              transform: isMobile ? "none" : "translateY(-3px)",
-              boxShadow: isSelected
-                ? "0 8px 22px rgba(47, 111, 94, 0.4)"
-                : "0 8px 20px rgba(0,0,0,0.1)",
-            },
-            "&:active": {
-              transform: "scale(0.98)",
-            },
+            justifyContent: "center",
+            fontWeight: "bold",
+            fontSize: "13px",
+            flexShrink: 0,
+            mr: 1.8,
           }}
         >
-          {/* رقم السورة */}
-          <Box
+          {p.number}
+        </Box>
+
+        {/* اسم السورة والمعلومات */}
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography
             sx={{
-              width: 36,
-              height: 36,
-              borderRadius: "50%",
-              background: isSelected ? "#fff" : "#2F6F5E",
-              color: isSelected ? "#2F6F5E" : "white",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-              fontSize: "14px",
-              flexShrink: 0,
-              mr: 2,
+              fontWeight: 600,
+              fontSize: "15.5px",
+              color: isSelected ? "#fff" : "#1a4a3a",
+              lineHeight: 1.3,
             }}
           >
-            {p.number}
-          </Box>
-
-          {/* اسم السورة والمعلومات */}
-          <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography
-              sx={{
-                fontWeight: 600,
-                fontSize: "16px",
-                color: isSelected ? "#fff" : "#1a4a3a",
-                lineHeight: 1.3,
-              }}
-            >
-              {p.name}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: "13px",
-                color: isSelected ? "rgba(255,255,255,0.85)" : "#5a7a6e",
-                mt: 0.3,
-              }}
-            >
-              {p.englishName} • {p.numberOfAyahs} آيات
-            </Typography>
-          </Box>
-
-          {/* الأيقونات */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, flexShrink: 0 }}>
-            <AutoStoriesIcon
-              sx={{ fontSize: 20, color: isSelected ? "#fff" : "#2F6F5E" }}
-            />
-            <KeyboardArrowRightIcon
-              sx={{ color: isSelected ? "#fff" : "#2F6F5E", fontSize: 22 }}
-            />
-          </Box>
+            {p.name}
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: "12.5px",
+              color: isSelected ? "rgba(255,255,255,0.85)" : "#6b8a7c",
+              mt: 0.25,
+            }}
+          >
+            {p.englishName} • {p.numberOfAyahs} آيات
+          </Typography>
         </Box>
-      );
-    });
+
+        {/* الأيقونات */}
+        <Box sx={{ display: "flex", alignItems: "center", gap: 0.3, flexShrink: 0 }}>
+          <AutoStoriesIcon
+            sx={{ fontSize: 18, color: isSelected ? "#fff" : "#2F6F5E", opacity: 0.9 }}
+          />
+          <KeyboardArrowRightIcon
+            sx={{ color: isSelected ? "#fff" : "#2F6F5E", fontSize: 20 }}
+          />
+        </Box>
+      </Box>
+    );
+  });
 
   return (
     <Box
       sx={{
         px: { xs: 1.5, sm: 2, md: 3 },
-        pb: 4,
+        pb: 5,
         maxWidth: "1400px",
         mx: "auto",
       }}
@@ -147,8 +157,8 @@ export default function Quran() {
           height: { xs: "140px", sm: "180px", md: "200px" },
           width: "100%",
           objectFit: "cover",
-          borderRadius: { xs: "12px", md: "15px" },
-          mb: 2,
+          borderRadius: { xs: "12px", md: "16px" },
+          mb: 2.5,
           display: "block",
         }}
       />
@@ -158,57 +168,130 @@ export default function Quran() {
         sx={{
           display: "flex",
           flexDirection: { xs: "column", md: "row" },
-          gap: { xs: 2, md: 2 },
+          gap: { xs: 2.5, md: 3 },
           alignItems: "flex-start",
         }}
       >
-        {/* قائمة السور + البحث */}
+        {/* ========== القائمة الجانبية (البحث + السور) ========== */}
         <Box
           sx={{
-            width: { xs: "100%", md: 340 },
+            width: { xs: "100%", md: 380 },
             flexShrink: 0,
-            background: "#E5F2ED",
+            background: "#f7fbf9",
             borderRadius: 3,
-            border: "1px solid #e5e7eb",
-            boxShadow: "0 4px 15px rgba(0,0,0,0.06)",
+            border: "1px solid #e0ebe5",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.05)",
             p: { xs: 2, sm: 2.5 },
             position: { md: "sticky" },
-            top: { md: 16 },
-            maxHeight: { md: "calc(100vh - 40px)" },
-            overflowY: { md: "auto" },
+            top: { md: 20 },
+            maxHeight: { md: "calc(100vh - 48px)" },
+            display: "flex",
+            flexDirection: "column",
           }}
         >
+          {/* عنوان القائمة */}
+          <Typography
+            sx={{
+              fontWeight: 700,
+              fontSize: "17px",
+              color: "#1a4a3a",
+              mb: 1.8,
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <AutoStoriesIcon sx={{ fontSize: 22, color: "#2F6F5E" }} />
+            فهرس السور
+          </Typography>
+
+          {/* البحث */}
           <TextField
             value={search}
             onChange={(e) => setsearch(e.target.value)}
             variant="outlined"
             dir="rtl"
-            placeholder="البحث عن سورة"
+            placeholder="ابحث عن سورة..."
             fullWidth
             size="small"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: "#2F6F5E", fontSize: 20 }} />
+                </InputAdornment>
+              ),
+            }}
             sx={{
               mb: 2,
               "& .MuiOutlinedInput-root": {
-                backgroundColor: "white",
-                borderRadius: 2,
+                backgroundColor: "#ffffff",
+                borderRadius: 2.5,
                 "& fieldset": {
-                  borderColor: "#c8ddd4",
+                  borderColor: "#d0e0d8",
                 },
                 "&:hover fieldset": {
                   borderColor: "#2F6F5E",
                 },
                 "&.Mui-focused fieldset": {
                   borderColor: "#2F6F5E",
+                  borderWidth: "1.5px",
                 },
               },
             }}
           />
 
-          <Box sx={{ display: "flex", flexDirection: "column" }}>{surah}</Box>
+          {/* عدد النتائج */}
+          {search && (
+            <Typography
+              sx={{
+                fontSize: "13px",
+                color: "#5a7a6e",
+                mb: 1.5,
+                px: 0.5,
+              }}
+            >
+              {filteredSurahs.length} نتيجة
+            </Typography>
+          )}
+
+          {/* قائمة السور */}
+          <Box
+            sx={{
+              flex: 1,
+              overflowY: "auto",
+              pr: 0.5,
+              "&::-webkit-scrollbar": {
+                width: "6px",
+              },
+              "&::-webkit-scrollbar-track": {
+                background: "#e8f0ec",
+                borderRadius: 10,
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: "#2F6F5E",
+                borderRadius: 10,
+              },
+            }}
+          >
+            {surah.length > 0 ? (
+              surah
+            ) : (
+              <Typography
+                sx={{
+                  textAlign: "center",
+                  color: "#6b8a7c",
+                  py: 4,
+                  fontSize: "15px",
+                }}
+              >
+                مفيش سور مطابقة للبحث
+              </Typography>
+            )}
+          </Box>
         </Box>
 
-        {/* عرض السورة المختارة */}
-        {selectedSurah && (
+        {/* ========== عرض السورة المختارة ========== */}
+        {selectedSurah ? (
           <Box
             ref={contentRef}
             sx={{
@@ -222,6 +305,7 @@ export default function Quran() {
               direction: "rtl",
               position: "relative",
               overflow: "hidden",
+              minHeight: { md: "70vh" },
             }}
           >
             {/* زخرفة خفيفة في الخلفية */}
@@ -320,7 +404,7 @@ export default function Quran() {
               }}
             />
 
-            {/* الآيات - خط هادي ومريح */}
+            {/* الآيات */}
             <Box sx={{ position: "relative" }}>
               {selectedSurah.ayahs.map((ayah, index) => (
                 <Typography
@@ -376,6 +460,28 @@ export default function Quran() {
                 </Typography>
               ))}
             </Box>
+          </Box>
+        ) : (
+          // لما مفيش سورة مختارة (على الكمبيوتر)
+          <Box
+            sx={{
+              flex: 1,
+              display: { xs: "none", md: "flex" },
+              alignItems: "center",
+              justifyContent: "center",
+              minHeight: "60vh",
+              borderRadius: 3,
+              background: "linear-gradient(180deg, #FDF8F0 0%, #F8F0E3 100%)",
+              border: "1px dashed #d4c9b5",
+              color: "#8a7a65",
+              flexDirection: "column",
+              gap: 1.5,
+            }}
+          >
+            <AutoStoriesIcon sx={{ fontSize: 48, opacity: 0.4 }} />
+            <Typography sx={{ fontSize: "18px", fontWeight: 500 }}>
+              اختر سورة من القائمة للبدء
+            </Typography>
           </Box>
         )}
       </Box>
