@@ -16,7 +16,7 @@ import { DoaaContext } from "../Context/Doaas";
 import { useMediaQuery, useTheme } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
-
+import AdSense from "./AdSense";
 import SelfImprovementIcon from "@mui/icons-material/SelfImprovement";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
@@ -288,6 +288,7 @@ export default function DashBoard() {
           </Typography>
         </Box>
       </Box>
+<AdSense slot="3331557063" style={{ mt: 4, mb: 2 }} />
 
       {/* ========== كروت التنقل السريع ========== */}
       <Box
