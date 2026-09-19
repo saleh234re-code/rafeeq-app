@@ -7,6 +7,15 @@ import { TextField, useMediaQuery, useTheme } from "@mui/material";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import Typography from "@mui/material/Typography";
 
+// دالة إزالة التشكيل
+function removeTashkeel(text) {
+  if (!text) return "";
+  return text
+    .replace(/[\u064B-\u065F]/g, "")
+    .replace(/ٱ/g, "ا")
+    .trim();
+}
+
 export default function Quran() {
   const { ShowSurah, selectedSurah, getOneSurah } = useContext(QuranContexted);
   const [search, setsearch] = useState("");
@@ -23,9 +32,11 @@ export default function Quran() {
     }
   }, [selectedSurah, isMobile]);
 
-  const surah = ShowSurah.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  )
+  const surah = ShowSurah.filter((p) => {
+    const cleanName = removeTashkeel(p.name);
+    const cleanSearch = removeTashkeel(search);
+    return cleanName.includes(cleanSearch);
+  })
     .slice(0, 10)
     .map((p) => {
       const isSelected = selectedSurah?.number === p.number;
@@ -204,13 +215,41 @@ export default function Quran() {
               flex: 1,
               width: "100%",
               borderRadius: 3,
-              background: "#F8F0E3",
-              border: "1px solid #e5e7eb",
-              boxShadow: "0 4px 15px rgba(0,0,0,0.06)",
-              p: { xs: 2, sm: 3, md: 4 },
+              background: "linear-gradient(180deg, #FDF8F0 0%, #F8F0E3 100%)",
+              border: "1px solid #e8dfd0",
+              boxShadow: "0 8px 30px rgba(0,0,0,0.07)",
+              p: { xs: 2.5, sm: 3.5, md: 4.5 },
               direction: "rtl",
+              position: "relative",
+              overflow: "hidden",
             }}
           >
+            {/* زخرفة خفيفة في الخلفية */}
+            <Box
+              sx={{
+                position: "absolute",
+                top: -40,
+                right: -40,
+                width: 180,
+                height: 180,
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(47,111,94,0.06) 0%, transparent 70%)",
+                pointerEvents: "none",
+              }}
+            />
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: -50,
+                left: -50,
+                width: 200,
+                height: 200,
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(47,111,94,0.05) 0%, transparent 70%)",
+                pointerEvents: "none",
+              }}
+            />
+
             {/* رأس السورة */}
             <Box
               sx={{
@@ -220,6 +259,7 @@ export default function Quran() {
                 justifyContent: "space-between",
                 gap: { xs: 1, sm: 2 },
                 mb: 2,
+                position: "relative",
               }}
             >
               <Typography
@@ -228,6 +268,10 @@ export default function Quran() {
                   fontWeight: 500,
                   fontSize: { xs: "14px", sm: "15px" },
                   order: { xs: 2, sm: 1 },
+                  background: "rgba(47,111,94,0.08)",
+                  px: 1.5,
+                  py: 0.4,
+                  borderRadius: 2,
                 }}
               >
                 {selectedSurah.revelationType === "Meccan" ? "مكية" : "مدنية"}
@@ -236,11 +280,13 @@ export default function Quran() {
               <Typography
                 variant="h5"
                 sx={{
-                  color: "#2F6F5E",
+                  color: "#1a4a3a",
                   fontWeight: 700,
                   textAlign: "center",
-                  fontSize: { xs: "20px", sm: "24px", md: "28px" },
+                  fontSize: { xs: "22px", sm: "26px", md: "30px" },
                   order: { xs: 1, sm: 2 },
+                  letterSpacing: "1px",
+                  textShadow: "0 1px 2px rgba(0,0,0,0.05)",
                 }}
               >
                 ﴿ {selectedSurah.name} ﴾
@@ -252,6 +298,10 @@ export default function Quran() {
                   fontWeight: 500,
                   fontSize: { xs: "14px", sm: "15px" },
                   order: { xs: 3, sm: 3 },
+                  background: "rgba(47,111,94,0.08)",
+                  px: 1.5,
+                  py: 0.4,
+                  borderRadius: 2,
                 }}
               >
                 عدد الآيات : {selectedSurah.numberOfAyahs}
@@ -261,41 +311,71 @@ export default function Quran() {
             <Box
               component="hr"
               sx={{
-                width: "100%",
+                width: "60%",
+                mx: "auto",
                 border: "none",
                 borderTop: "1.5px solid #2F6F5E",
-                opacity: 0.4,
-                mb: 3,
+                opacity: 0.3,
+                mb: 4,
               }}
             />
 
-            {/* الآيات */}
-            {selectedSurah.ayahs.map((ayah) => (
-              <Typography
-                key={ayah.number}
-                component="div"
-                sx={{
-                  fontSize: { xs: "18px", sm: "20px", md: "24px" },
-                  lineHeight: { xs: 1.9, sm: 2 },
-                  textAlign: "center",
-                  color: "#222",
-                  mb: { xs: 2.5, sm: 2 },
-                  px: { xs: 0.5, sm: 1 },
-                }}
-              >
-                {ayah.text}{" "}
-                <Box
-                  component="span"
+            {/* الآيات - خط هادي ومريح */}
+            <Box sx={{ position: "relative" }}>
+              {selectedSurah.ayahs.map((ayah, index) => (
+                <Typography
+                  key={ayah.number}
+                  component="div"
                   sx={{
-                    color: "#2F6F5E",
-                    fontSize: { xs: "15px", sm: "16px" },
-                    fontWeight: 500,
+                    fontSize: { xs: "20px", sm: "22px", md: "26px" },
+                    lineHeight: { xs: 2.1, sm: 2.2 },
+                    textAlign: "center",
+                    color: "#2c2c2c",
+                    mb: { xs: 3, sm: 2.8 },
+                    px: { xs: 1, sm: 2 },
+                    fontFamily: "'Amiri', 'Traditional Arabic', 'Scheherazade New', serif",
+                    letterSpacing: "0.3px",
+                    transition: "all 0.3s ease",
+                    borderRadius: 2,
+                    py: 1,
+                    "&:hover": {
+                      background: "rgba(47, 111, 94, 0.04)",
+                    },
                   }}
                 >
-                  ﴿{ayah.numberInSurah}﴾
-                </Box>
-              </Typography>
-            ))}
+                  <Box
+                    component="span"
+                    sx={{
+                      display: "inline",
+                      background: index % 2 === 0 ? "transparent" : "rgba(47,111,94,0.03)",
+                      borderRadius: 1,
+                      px: 0.5,
+                    }}
+                  >
+                    {ayah.text}
+                  </Box>{" "}
+                  <Box
+                    component="span"
+                    sx={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#2F6F5E",
+                      fontSize: { xs: "14px", sm: "15px" },
+                      fontWeight: 600,
+                      background: "rgba(47,111,94,0.1)",
+                      width: 28,
+                      height: 28,
+                      borderRadius: "50%",
+                      mx: 0.5,
+                      verticalAlign: "middle",
+                    }}
+                  >
+                    {ayah.numberInSurah}
+                  </Box>
+                </Typography>
+              ))}
+            </Box>
           </Box>
         )}
       </Box>
